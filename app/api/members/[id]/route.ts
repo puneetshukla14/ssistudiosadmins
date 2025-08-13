@@ -6,10 +6,20 @@ import { Member, IMember } from '@/models/Employee'; // Using Mongoose model
 import dbConnect from '@/lib/dbConnect'; // Using Mongoose connection
 // import bcrypt from 'bcryptjs'; // IMPORTANT: Don't forget to install and use for hashing!
 
+// Corrected type definition for the route context
+// Next.js expects the context object to have a 'params' property
+// where 'params' itself is an object containing the dynamic segment keys.
+type RouteParams = {
+  id: string; // This matches your dynamic route folder name [id]
+};
+
 // Handle PUT requests
-export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
+export async function PUT(
+  req: NextRequest,
+  { params }: { params: RouteParams } // Directly destructure params and type it
+) {
   await dbConnect(); // Connect via Mongoose
-  const { id } = params;
+  const { id } = params; // Access id directly from destructured params
 
   const { username, password } = await req.json();
 
@@ -53,9 +63,12 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
 }
 
 // Handle DELETE requests
-export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(
+  req: NextRequest,
+  { params }: { params: RouteParams } // Apply the same type here
+) {
   await dbConnect(); // Connect via Mongoose
-  const { id } = params;
+  const { id } = params; // Access id directly from destructured params
 
   try {
     const deletedMember: IMember | null = await Member.findByIdAndDelete(id);
