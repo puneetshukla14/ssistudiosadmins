@@ -11,25 +11,9 @@ const nextConfig: NextConfig = {
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
   },
-  // Ensure proper redirects work
+  // Remove redirects to avoid conflicts with page.tsx
   async redirects() {
-    return [
-      {
-        source: '/',
-        destination: '/login',
-        permanent: false,
-      },
-      {
-        source: '/index',
-        destination: '/login',
-        permanent: false,
-      },
-      {
-        source: '/home',
-        destination: '/login',
-        permanent: false,
-      },
-    ];
+    return [];
   },
 };
 
