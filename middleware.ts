@@ -1,15 +1,30 @@
-import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export function middleware(req: NextRequest) {
-  // Redirect root URL (/) to /app/page
-  if (req.nextUrl.pathname === "/") {
-    return NextResponse.redirect(new URL("/app/page", req.url));
+export default function middleware(request: NextRequest) {
+  const url = request.nextUrl;
+  const isLoggedIn = request.cookies.get("admin-auth")?.value === "true";
+
+  // Redirect old paths
+  if (url.pathname === "/old-page") {
+    url.pathname = "/new-page";
+    return NextResponse.redirect(url);
   }
 
+  // Let login and API requests through without checking
+  if (url.pathname.startsWith("/login") || url.pathname.startsWith("/api")) {
+    return NextResponse.next();
+  }
+
+  // Block everything else if not logged in
+  if (!isLoggedIn) {
+    url.pathname = "/login";
+    return NextResponse.redirect(url);
+  }
+
+  // Continue normally
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/"], // Only run for homepage
+  matcher: ["/:path*"],
 };
