@@ -11,6 +11,26 @@ const nextConfig: NextConfig = {
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
   },
+  // Ensure proper redirects work
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/login',
+        permanent: false,
+      },
+      {
+        source: '/index',
+        destination: '/login',
+        permanent: false,
+      },
+      {
+        source: '/home',
+        destination: '/login',
+        permanent: false,
+      },
+    ];
+  },
 };
 
 export default nextConfig;
