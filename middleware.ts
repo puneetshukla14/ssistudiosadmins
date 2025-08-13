@@ -4,25 +4,31 @@ export default function middleware(request: NextRequest) {
   try {
     const { pathname } = request.nextUrl;
 
-    // Skip middleware for static assets, API routes, and Next.js internals
-    if (
-      pathname.startsWith("/api/") ||
-      pathname.startsWith("/_next/") ||
-      pathname.startsWith("/favicon") ||
-      pathname.includes(".") ||
-      pathname === "/login"
-    ) {
+    // If accessing login page, allow it
+    if (pathname === "/login") {
       return NextResponse.next();
     }
 
-    // Check authentication for protected routes
-    const authCookie = request.cookies.get("admin-auth");
-    const isLoggedIn = authCookie?.value === "true";
+    // For root path, redirect to login if not authenticated
+    if (pathname === "/") {
+      const authCookie = request.cookies.get("admin-auth");
+      const isLoggedIn = authCookie?.value === "true";
 
-    // Redirect to login if not authenticated
-    if (!isLoggedIn) {
-      const loginUrl = new URL("/login", request.url);
-      return NextResponse.redirect(loginUrl);
+      if (!isLoggedIn) {
+        return NextResponse.redirect(new URL("/login", request.url));
+      }
+      // If authenticated, let the page handle the redirect to dashboard
+      return NextResponse.next();
+    }
+
+    // For dashboard routes, check authentication
+    if (pathname.startsWith("/dashboard")) {
+      const authCookie = request.cookies.get("admin-auth");
+      const isLoggedIn = authCookie?.value === "true";
+
+      if (!isLoggedIn) {
+        return NextResponse.redirect(new URL("/login", request.url));
+      }
     }
 
     return NextResponse.next();
@@ -36,12 +42,10 @@ export default function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     /*
-     * Match all request paths except:
-     * - api (API routes)
-     * - _next (Next.js internals)
-     * - favicon.ico
-     * - static files with extensions
+     * Only run middleware on dashboard routes
+     * This explicitly avoids API routes and static files
      */
-    "/((?!api|_next|favicon.ico|.*\\.).*)",
+    '/dashboard/:path*',
+    '/',
   ],
 };
