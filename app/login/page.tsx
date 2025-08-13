@@ -102,10 +102,11 @@ export default function LoginPage() {
             </label>
             <input
               type="text"
+              autoComplete="username"
               className="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2
                           text-gray-900 md:text-white
                           focus:outline-none focus:ring-2 focus:ring-black md:focus:ring-blue-300
-                          bg-white md:bg-gray-900/30 md:border-gray-700/50" 
+                          bg-white md:bg-gray-900/30 md:border-gray-700/50"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               placeholder="Enter your username"
@@ -119,10 +120,11 @@ export default function LoginPage() {
             </label>
             <input
               type="password"
+              autoComplete="current-password"
               className="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2
                           text-gray-900 md:text-white
                           focus:outline-none focus:ring-2 focus:ring-black md:focus:ring-blue-300
-                          bg-white md:bg-gray-900/30 md:border-gray-700/50" 
+                          bg-white md:bg-gray-900/30 md:border-gray-700/50"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Enter your password"

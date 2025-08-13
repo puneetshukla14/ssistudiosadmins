@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import {
   FiUsers,
   FiLogOut,
-  FiUserPlus,
+
   FiEdit3,
   FiTrash2,
   FiSave,
@@ -23,7 +23,7 @@ import {
   FiLoader, // For loading spinner
   FiClock, // For timestamps
 } from "react-icons/fi";
-import AuthBackground from "@/components/AuthBackground"; // Assuming AuthBackground.tsx exists
+import AuthBg from "@/components/Authbg"; // Fixed import path to match actual component
 
 interface Member {
   _id: string;
@@ -230,7 +230,7 @@ const formatDate = (dateString?: string) => {
     <div className="relative min-h-screen font-sans antialiased p-4 sm:p-6 lg:p-8 overflow-hidden bg-black md:bg-transparent">
       {/* AuthBackground for desktop and tablet views */}
       <div className="hidden md:block absolute inset-0 z-0">
-        <AuthBackground />
+        <AuthBg />
       </div>
 
       {/* Global Loading Overlay */}
@@ -337,6 +337,7 @@ const formatDate = (dateString?: string) => {
               <input
                 type="text"
                 id="username"
+                autoComplete="username"
                 placeholder="Enter username"
                 className="w-full bg-white/5 border border-white/15 p-3 sm:p-4 rounded-lg text-light-text placeholder-subtle-text focus:ring-2 focus:ring-accent-blue focus:border-transparent transition-all duration-300 ease-in-out text-base"
                 value={username}
@@ -355,6 +356,7 @@ const formatDate = (dateString?: string) => {
               <input
                 type={showPassword ? "text" : "password"}
                 id="password"
+                autoComplete="new-password"
                 placeholder="Enter password"
                 className="w-full bg-white/5 border border-white/15 p-3 sm:p-4 rounded-lg text-light-text placeholder-subtle-text focus:ring-2 focus:ring-accent-blue focus:border-transparent transition-all duration-300 ease-in-out text-base pr-10"
                 value={password}

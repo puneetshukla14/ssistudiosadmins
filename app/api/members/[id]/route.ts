@@ -23,7 +23,7 @@ export async function PUT(
       );
     }
 
-    let updateData: any = { username };
+    const updateData: { username: string; password?: string } = { username };
     if (password) {
       updateData.password = password; // TODO: hash in real app
     }

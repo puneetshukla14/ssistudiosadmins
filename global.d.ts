@@ -1,14 +1,27 @@
 // global.d.ts
-// This file might be in your project root or a 'types' folder
-import { Mongoose } from 'mongoose'; 
+import { Mongoose } from 'mongoose';
+import { MongoClient } from 'mongodb';
 
 declare global {
+  // Mongoose global cache
+  var mongoose: {
+    conn: Mongoose | null;
+    promise: Promise<Mongoose> | null;
+  };
+
+  // MongoDB client global cache
+  var _mongoClientPromise: Promise<MongoClient>;
+
+  // Node.js environment variables
   namespace NodeJS {
-    interface Global {
-      mongoose: {
-        conn: Mongoose | null;
-        promise: Promise<Mongoose> | null;
-      };
+    interface ProcessEnv {
+      NODE_ENV: 'development' | 'production' | 'test';
+      MONGODB_URI: string;
+      MONGODB_DB?: string;
+      NEXTAUTH_URL?: string;
+      NEXTAUTH_SECRET?: string;
     }
   }
 }
+
+export {};

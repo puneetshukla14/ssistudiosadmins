@@ -10,8 +10,14 @@ export default function middleware(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  // Let login and API requests through without checking
-  if (url.pathname.startsWith("/login") || url.pathname.startsWith("/api")) {
+  // Let login, API requests, and static assets through without checking
+  if (
+    url.pathname.startsWith("/login") ||
+    url.pathname.startsWith("/api") ||
+    url.pathname.startsWith("/_next") ||
+    url.pathname.startsWith("/favicon") ||
+    url.pathname.includes(".")
+  ) {
     return NextResponse.next();
   }
 
@@ -26,5 +32,15 @@ export default function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/:path*"],
+  matcher: [
+    /*
+     * Match all request paths except for the ones starting with:
+     * - api (API routes)
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico (favicon file)
+     * - public folder files
+     */
+    "/((?!api|_next/static|_next/image|favicon.ico|.*\\..*$).*)",
+  ],
 };
