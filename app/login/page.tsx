@@ -1,7 +1,8 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import AuthBg from "@/components/Authbg"; // Assuming AuthBg.tsx is in components folder
+import { isAuthenticated } from "@/lib/auth";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -10,6 +11,13 @@ export default function LoginPage() {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false); // Controls "Verifying credentials..."
   const [showWelcome, setShowWelcome] = useState(false); // Controls "Welcome, [username]"
+
+  // Check if already authenticated and redirect
+  useEffect(() => {
+    if (isAuthenticated()) {
+      router.push('/dashboard/members');
+    }
+  }, [router]);
 
   // Helper function to capitalize the first letter of a string
   const capitalize = (s: string) => {

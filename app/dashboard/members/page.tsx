@@ -24,6 +24,7 @@ import {
   FiClock, // For timestamps
 } from "react-icons/fi";
 import AuthBg from "@/components/Authbg"; // Fixed import path to match actual component
+import AuthGuard from "@/components/AuthGuard";
 
 interface Member {
   _id: string;
@@ -227,11 +228,12 @@ const formatDate = (dateString?: string) => {
 };
 
   return (
-    <div className="relative min-h-screen font-sans antialiased p-4 sm:p-6 lg:p-8 overflow-hidden bg-black md:bg-transparent">
-      {/* AuthBackground for desktop and tablet views */}
-      <div className="hidden md:block absolute inset-0 z-0">
-        <AuthBg />
-      </div>
+    <AuthGuard>
+      <div className="relative min-h-screen font-sans antialiased p-4 sm:p-6 lg:p-8 overflow-hidden bg-black md:bg-transparent">
+        {/* AuthBackground for desktop and tablet views */}
+        <div className="hidden md:block absolute inset-0 z-0">
+          <AuthBg />
+        </div>
 
       {/* Global Loading Overlay */}
       {isApiLoading && (
@@ -519,6 +521,7 @@ const formatDate = (dateString?: string) => {
           </div> {/* End of overflow-x-auto */}
         </div>
       </div>
-    </div>
+      </div>
+    </AuthGuard>
   );
 }
